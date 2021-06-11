@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Discounts, type: :feature do
+RSpec.describe Discount, type: :feature do
   describe "Merchant Discounts" do
     before :each do
       # @merchant_1 = Merchant.create!(name: "Regina's Ragin' Ragu")
@@ -28,8 +28,18 @@ RSpec.describe Discounts, type: :feature do
 
     describe "" do
       it "" do
+      @merchant_1 = Merchant.create!(name: "Regina's Ragin' Ragu")
+      @discount = Discount.create!(percentage_discount: 20, quantity_threshold: 5, merchant_id: @merchant_1.id)
       visit "/merchants/#{@merchant_1.id}/dashboard"
+      click_on("View Discounts")
 
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/discounts")
+      expect(page).to have_content("Bulk Discount: 20")
+      expect(page).to have_content("Quantity Threshold: 5")
+
+      click_on("View")
+      
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/discounts/#{@discount.id}")
       end
     end
   end
